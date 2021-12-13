@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Newsitem from './Newsitem'
+import Spinner from './Spinner';
+import PropTypes from 'prop-types'
+
 
 export class News extends Component {
     articles =
@@ -32,8 +35,8 @@ export class News extends Component {
             },
             {
                 "source": {
-                "id": "espn",
-                "name": "ESPN"
+                    "id": "espn",
+                    "name": "ESPN"
                 },
                 "author": "Harry Lyles Jr.",
                 "title": "Penn State football hires ex-Miami Hurricanes coach Manny Diaz as defensive coordinator",
@@ -42,11 +45,11 @@ export class News extends Component {
                 "urlToImage": "https://a4.espncdn.com/combiner/i?img=%2Fphoto%2F2019%2F0725%2Fr574762_1296x729_16%2D9.jpg",
                 "publishedAt": "2021-12-11T15:36:00Z",
                 "content": "Penn State announced the hiring of former Miami head coach Manny Diaz as defensive coordinator and linebackers coach on Saturday. Diaz replaces Brent Pry, who was announced as Virginia Tech's new he… [+1452 chars]"
-                },
-                {
+            },
+            {
                 "source": {
-                "id": "espn",
-                "name": "ESPN"
+                    "id": "espn",
+                    "name": "ESPN"
                 },
                 "author": null,
                 "title": "New York Giants legend, TV personality Michael Strahan flies in space with astronaut's daughter",
@@ -55,11 +58,11 @@ export class News extends Component {
                 "urlToImage": "https://a2.espncdn.com/combiner/i?img=%2Fphoto%2F2021%2F1123%2Fr941446_1296x729_16%2D9.jpg",
                 "publishedAt": "2021-12-11T15:31:43Z",
                 "content": "Football star and TV celebrity Michael Strahan caught a ride to space with Jeff Bezos' rocket-launching company Saturday, sharing the trip with the daughter of America's first astronaut. Blue Origin… [+2455 chars]"
-                },
-                {
+            },
+            {
                 "source": {
-                "id": "time",
-                "name": "Time"
+                    "id": "time",
+                    "name": "Time"
                 },
                 "author": "MARCIA DUNN / AP",
                 "title": "Michael Strahan Launches Toward Space on Blue Origin Rocket",
@@ -68,11 +71,11 @@ export class News extends Component {
                 "urlToImage": "https://api.time.com/wp-content/uploads/2021/12/Space.jpg?quality=85&w=1200&h=628&crop=1",
                 "publishedAt": "2021-12-11T15:24:50Z",
                 "content": "Football star and TV celebrity Michael Strahan hurtled toward space with Jeff Bezos’ rocket company Saturday, sharing the ride with the daughter of America’s first astronaut. The co-host of ABC’s “G… [+1617 chars]"
-                },
-                {
+            },
+            {
                 "source": {
-                "id": "bbc-sport",
-                "name": "BBC Sport"
+                    "id": "bbc-sport",
+                    "name": "BBC Sport"
                 },
                 "author": "BBC Sport",
                 "title": "Legend Eto'o elected president of Cameroon FA",
@@ -81,11 +84,11 @@ export class News extends Component {
                 "urlToImage": "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/432B/production/_122059171_97066aca-87e8-4799-8d55-ed1b57571bf6.jpg",
                 "publishedAt": "2021-12-11T14:22:25.7435943Z",
                 "content": "Eto'o has appeared at four World Cups, but could not help Cameroon progress from the group stages Former international Samuel Eto'o will run Cameroonian football for the next four years after being … [+2424 chars]"
-                },
-                {
+            },
+            {
                 "source": {
-                "id": "associated-press",
-                "name": "Associated Press"
+                    "id": "associated-press",
+                    "name": "Associated Press"
                 },
                 "author": "MARCIA DUNN",
                 "title": "NFL, TV's Strahan flies in space with astronaut's daughter ",
@@ -94,60 +97,79 @@ export class News extends Component {
                 "urlToImage": "https://storage.googleapis.com/afs-prod/media/423a7b6e27bd408b8aece086dbf01717/3000.jpeg",
                 "publishedAt": "2021-12-11T11:25:23Z",
                 "content": "Football star and TV celebrity Michael Strahan caught a ride to space with Jeff Bezos’ rocket-launching company Saturday, sharing the trip with the daughter of America’s first astronaut.Blue Origin’s… [+3297 chars]"
-                }
+            }
         ]
 
+    static defaultProps = {
+        pageSize: '6',
+        category: 'science'
+    }
+
+    static propTypes = {
+        pageSize: PropTypes.string,
+        category: PropTypes.string
+    }
 
     constructor() {
         super();
         this.state = {
             articles: this.articles,
             loading: false,
-            pageno:1
+            pageno: 1
         }
-        
+
     }
 
     async componentDidMount() {
-        let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=e637e8f9c432450a918c81f6b2745d90&page=1&pageSize=12";
-        let data = await fetch(url);
-        let passeddata = await data.json()
-        this.setState({articles: passeddata.articles,totalResults:passeddata.totalResults})
-    }
-    handleprevClick = async ()=>{
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=e637e8f9c432450a918c81f6b2745d90&page=${this.state.pageno -1}&pageSize=12`;
+        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=e637e8f9c432450a918c81f6b2745d90&page=1&pageSize=${this.props.pageSize}`;
+        this.setState({ loading: true });
         let data = await fetch(url);
         let passeddata = await data.json()
         this.setState({
             articles: passeddata.articles,
-            pageno :this.state.pageno -1
+            totalResults: passeddata.totalResults,
+            loading: false
         })
-        
     }
-    handleNextClick = async ()=>{
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=e637e8f9c432450a918c81f6b2745d90&page=${this.state.pageno +1}&pageSize=12`;
+    handleprevClick = async () => {
+        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=e637e8f9c432450a918c81f6b2745d90&page=${this.state.pageno - 1}&pageSize=${this.props.pageSize}`;
+        this.setState({ loading: true });
         let data = await fetch(url);
         let passeddata = await data.json()
         this.setState({
             articles: passeddata.articles,
-            pageno :this.state.pageno +1
+            pageno: this.state.pageno - 1,
+            loading: false
+        })
+
+    }
+    handleNextClick = async () => {
+        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=e637e8f9c432450a918c81f6b2745d90&page=${this.state.pageno + 1}&pageSize=${this.props.pageSize}`;
+        this.setState({ loading: true });
+        let data = await fetch(url);
+        let passeddata = await data.json()
+        this.setState({
+            articles: passeddata.articles,
+            pageno: this.state.pageno + 1,
+            loading: false
         })
 
     }
 
-    
+
 
     render() {
         console.log(this.state.pageno);
         return (
             <div>
                 <div className="container">
-                    <h2 className='my-3'>My News App</h2>
+                    <h2 className='my-3 text-center'>My News App</h2>
+                    <p className='text-center'>{this.state.loading && <Spinner />}</p>
                     <div className="row">
-                        {this.state.articles.map((element) => {
+                        {!this.state.loading && this.state.articles.map((element) => {
                             let total_count = 200 - (element.title.length)
                             return <div className="col-md-4 my-1" key={element.url}>
-                                <Newsitem  title={element.title?element.title:"Something"} description={element.description?element.description.slice(0,total_count)+"...":"Something"} imageUrl={element.urlToImage} newsUrl={element.url} pub={element.publishedAt.slice(0,10) } />
+                                <Newsitem title={element.title ? element.title : "Something"} description={element.description ? element.description.slice(0, total_count) + "..." : "Something"} imageUrl={element.urlToImage?element.urlToImage :"https://a4.espncdn.com/combiner/i?img=%2Fphoto%2F2019%2F0725%2Fr574762_1296x729_16%2D9.jpg"} newsUrl={element.url} pub={element.publishedAt.slice(0, 10)} author={element.author?element.author:"Unknown"} />
                             </div>
 
                         })}
@@ -155,8 +177,8 @@ export class News extends Component {
                     </div>
                 </div>
                 <div className="container d-flex justify-content-between my-5">
-                <button disabled={this.state.pageno<=1} type="button" className="btn btn-primary" onClick={this.handleprevClick} > &larr; Previous</button>
-                <button disabled={this.state.pageno>=Math.ceil(this.state.totalResults/12)} type="button" className="btn btn-primary" onClick={this.handleNextClick}  >Next &rarr;</button>
+                    <button disabled={this.state.pageno <= 1} type="button" className="btn btn-primary" onClick={this.handleprevClick} > &larr; Previous</button>
+                    <button disabled={this.state.pageno >= Math.ceil(this.state.totalResults / this.props.pageSize)} type="button" className="btn btn-primary" onClick={this.handleNextClick}  >Next &rarr;</button>
                 </div>
             </div>
         )
