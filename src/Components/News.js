@@ -110,14 +110,14 @@ export class News extends Component {
         category: PropTypes.string
     }
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             articles: this.articles,
             loading: false,
             pageno: 1
         }
-
+        document.title = `${this.props.category} - News App`
     }
 
     async componentDidMount() {
@@ -169,7 +169,7 @@ export class News extends Component {
                         {!this.state.loading && this.state.articles.map((element) => {
                             let total_count = 200 - (element.title.length)
                             return <div className="col-md-4 my-1" key={element.url}>
-                                <Newsitem title={element.title ? element.title : "Something"} description={element.description ? element.description.slice(0, total_count) + "..." : "Something"} imageUrl={element.urlToImage?element.urlToImage :"https://a4.espncdn.com/combiner/i?img=%2Fphoto%2F2019%2F0725%2Fr574762_1296x729_16%2D9.jpg"} newsUrl={element.url} pub={element.publishedAt.slice(0, 10)} author={element.author?element.author:"Unknown"} />
+                                <Newsitem title={element.title ? element.title : "Something"} description={element.description ? element.description.slice(0, total_count) + "..." : "Something"} imageUrl={element.urlToImage ? element.urlToImage : "https://a4.espncdn.com/combiner/i?img=%2Fphoto%2F2019%2F0725%2Fr574762_1296x729_16%2D9.jpg"} newsUrl={element.url} pub={element.publishedAt.slice(0, 10)} author={element.author ? element.author : "Unknown"} />
                             </div>
 
                         })}
