@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export class Spinner extends Component {
     render() {
         return (
-            <div>
+            <div className='text-center my-3'>
                 
                 <div className="spinner-grow text-success mx-1" role="status">
                     <span className="visually-hidden">Loading...</span>
