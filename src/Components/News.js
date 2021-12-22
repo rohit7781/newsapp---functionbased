@@ -11,10 +11,7 @@ const News = (props)=> {
     const [pageno, setPageno] = useState(1)
     const [totalResults, setTotalResults] = useState(0)
     
-
-    useEffect( async () => {
-        document.title = `${props.category} - News App`
-        
+    const fetchData = async () => {
         props.setProgress(10);
         const url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.apiKey}&page=1&pageSize=${props.pageSize}`;
         props.setProgress(40); 
@@ -26,6 +23,12 @@ const News = (props)=> {
         setTotalResults(passeddata.totalResults)
         setLoading(false)
         props.setProgress(100);
+    }
+
+    useEffect( () => {
+        document.title = `${props.category} - News App`
+        fetchData();    
+    // eslint-disable-next-line 
     }, []) 
 
     

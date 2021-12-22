@@ -21,16 +21,15 @@ const App =()=> {
 
 
 
-    return (
+    return ( 
+        <>
       <Router>
-        <div>
         <Navbar />
           <LoadingBar
             color='#dee81a'
             progress={progress}
           />
          
-          {/* <News setProgress={setProgress} apiKey={apiKey} pageSize='6' category="general" /> */}
           <Routes>
             <Route exact path="/" element={<News setProgress={setProgress} apiKey={apiKey} key="general" pageSize='6' category="general" />} />
             <Route exact path="/general" element={<News setProgress={setProgress} apiKey={apiKey} key="general" pageSize='6' category="general" />} />
@@ -41,8 +40,8 @@ const App =()=> {
             <Route exact path="/health" element={<News setProgress={setProgress} apiKey={apiKey} key="health" pageSize='6' category="health" />} />
             <Route exact path="/entertainment" element={<News setProgress={setProgress} apiKey={apiKey} key="entertainment" pageSize='6' category="entertainment" />} />
           </Routes>
-        </div>
       </Router>
+        </>
     )
   
 }
