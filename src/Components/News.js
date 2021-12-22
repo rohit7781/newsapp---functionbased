@@ -14,7 +14,7 @@ const News = (props)=> {
 
     useEffect( async () => {
         document.title = `${props.category} - News App`
-
+        
         props.setProgress(10);
         const url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.apiKey}&page=1&pageSize=${props.pageSize}`;
         props.setProgress(40); 
@@ -26,7 +26,7 @@ const News = (props)=> {
         setTotalResults(passeddata.totalResults)
         setLoading(false)
         props.setProgress(100);
-    }, [])
+    }, []) 
 
     
 
@@ -46,9 +46,6 @@ const News = (props)=> {
     }
 
 
-
-  
-        console.log(pageno);
         return (
             <div>
 
