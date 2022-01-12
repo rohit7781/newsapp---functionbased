@@ -53,7 +53,7 @@ const News = (props)=> {
             <div>
 
                 <h2 className='my-3 text-center'>My News App</h2>
-                <p className='text-center'>{loading && <Spinner />}</p>
+                <div className='text-center'>{loading && <Spinner />}</div>
                 <InfiniteScroll
                     dataLength={articles.length}
                     next={fetchMoreData}
